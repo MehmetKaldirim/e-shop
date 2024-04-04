@@ -11,7 +11,21 @@ router.get("/login", authController.getLogin);
 
 router.get("/signup", authController.getSignup);
 
-router.post("/login", authController.postLogin);
+router.post(
+  "/login",
+  [
+    expValidator
+      .body("email")
+      .isEmail()
+      .withMessage("Please entere a valid address"),
+      expValidator
+      .body("password","Please enter a password with only numbers and text and at least 5 characters")
+      .isLength({min:5}).isAlphanumeric()
+      .withMessage("Please entere a valid address"),
+
+  ],
+  authController.postLogin
+);
 
 router.post(
   "/signup",
