@@ -17,11 +17,13 @@ router.post(
     expValidator
       .body("email")
       .isEmail()
-      .withMessage("Please entere a valid address"),
+      .withMessage("Please entere a valid address")
+      .normalizeEmail(),
       expValidator
       .body("password","Please enter a password with only numbers and text and at least 5 characters")
       .isLength({min:5}).isAlphanumeric()
-      .withMessage("Please entere a valid address"),
+      .withMessage("Please entere a valid address")
+      .trim(),
 
   ],
   authController.postLogin
@@ -42,14 +44,16 @@ router.post(
             );
           }
         });
-      }),
+      })
+      .normalizeEmail(),
     expValidator
       .body(
         "password",
         "Please enter a password with only numbers and text and at least 5 characters"
       )
       .isLength({ min: 5 })
-      .isAlphanumeric(),
+      .isAlphanumeric()
+      .trim(),
     expValidator
       .body("confirmPassword")
       .custom((value, { req }) => {
@@ -59,7 +63,8 @@ router.post(
         return true;
       })
       .isLength({ min: 5 })
-      .isAlphanumeric(),
+      .isAlphanumeric()
+      .trim(),
   ],
   authController.postSignup
 );
